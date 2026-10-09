@@ -10,7 +10,6 @@ from flask import Flask, jsonify, request
 app = Flask(__name__)
 LOG = Path("honeypot_events.jsonl")
 
-
 def record() -> dict:
     event = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -23,13 +22,11 @@ def record() -> dict:
         handle.write(json.dumps(event) + "\n")
     return event
 
-
 def read_events(limit: int = 100) -> list[dict]:
     if not LOG.exists():
         return []
     lines = LOG.read_text(encoding="utf-8").splitlines()[-limit:]
     return [json.loads(line) for line in lines]
-
 
 @app.route("/", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
 @app.route("/admin", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
@@ -37,6 +34,10 @@ def decoy():
     record()
     return "Not Found", 404
 
+@app.errorhandler(404)
+def unmatched_route(_error):
+    record()
+    return "Not Found", 404
 
 @app.get("/events")
 def events():
@@ -45,7 +46,6 @@ def events():
     except ValueError:
         return jsonify({"error": "limit must be an integer"}), 400
     return jsonify(read_events(limit))
-
 
 @app.get("/api/summary")
 def summary():
@@ -62,7 +62,6 @@ def summary():
         "top_user_agents": dict(agents.most_common(10)),
         "log_file": str(LOG),
     })
-
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8080, debug=False)
