@@ -151,3 +151,7 @@ After generating local test requests, inspect `/events` for recent events and `/
 ## Investigation metadata
 
 The summary endpoint now includes the most common client addresses and User-Agent values in addition to methods and paths. This helps you spot repeated local test behavior without collecting credentials or request bodies.
+
+## Unmatched routes
+
+Requests to unknown local routes are now logged through the 404 handler, making the honeypot useful for observing unexpected paths as well as its explicit decoy endpoints.
