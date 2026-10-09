@@ -147,3 +147,7 @@ The honeypot is deliberately limited and local-only. It does not collect passwor
 ## Quick investigation workflow
 
 After generating local test requests, inspect `/events` for recent events and `/api/summary` for method and path statistics. Both endpoints are local-only.
+
+## Investigation metadata
+
+The summary endpoint now includes the most common client addresses and User-Agent values in addition to methods and paths. This helps you spot repeated local test behavior without collecting credentials or request bodies.
