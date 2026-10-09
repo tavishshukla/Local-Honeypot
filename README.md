@@ -143,3 +143,7 @@ Local-Honeypot/
 ## Security model
 
 The honeypot is deliberately limited and local-only. It does not collect passwords, execute commands, accept uploads, bypass authentication, or expose an intentionally vulnerable service.
+
+## Quick investigation workflow
+
+After generating local test requests, inspect `/events` for recent events and `/api/summary` for method and path statistics. Both endpoints are local-only.
