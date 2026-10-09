@@ -52,10 +52,14 @@ def summary():
     rows = read_events(500)
     methods = Counter(row["method"] for row in rows)
     paths = Counter(row["path"] for row in rows)
+    clients = Counter(row["client"] for row in rows)
+    agents = Counter(row["user_agent"] or "unknown" for row in rows)
     return jsonify({
         "events": len(rows),
         "methods": dict(methods),
         "top_paths": dict(paths.most_common(10)),
+        "top_clients": dict(clients.most_common(10)),
+        "top_user_agents": dict(agents.most_common(10)),
         "log_file": str(LOG),
     })
 
